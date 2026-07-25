@@ -1,8 +1,19 @@
 import streamlit as st
 import os
 import tempfile
+
+# Automatically sync Streamlit Cloud Secrets to os.environ if present
+try:
+    if hasattr(st, "secrets"):
+        for key, val in st.secrets.items():
+            if isinstance(val, str):
+                os.environ[key] = val
+except Exception:
+    pass
+
 from QueryProcessor import process_user_query
 from dataprocessor import run as run_data_processor
+
 
 # Set Streamlit Page Configuration
 st.set_page_config(

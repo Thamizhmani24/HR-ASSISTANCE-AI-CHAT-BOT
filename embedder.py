@@ -16,8 +16,13 @@ def get_openai_client():
                 "Invalid or missing OPENAI_API_KEY in your .env file. "
                 "Please replace the placeholder key with your actual OpenAI API key."
             )
-        _client = OpenAI(api_key=api_key)
+        base_url = os.getenv("OPENAI_BASE_URL")
+        if base_url:
+            _client = OpenAI(api_key=api_key, base_url=base_url)
+        else:
+            _client = OpenAI(api_key=api_key)
     return _client
+
 
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "text-embedding-3-small")
 

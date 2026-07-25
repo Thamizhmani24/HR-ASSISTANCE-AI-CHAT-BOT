@@ -15,8 +15,13 @@ def get_openai_client():
                 "Invalid or missing OPENAI_API_KEY in your .env file. "
                 "Please replace the placeholder key with your actual OpenAI API key."
             )
-        _client = OpenAI(api_key=api_key)
+        base_url = os.getenv("OPENAI_BASE_URL")
+        if base_url:
+            _client = OpenAI(api_key=api_key, base_url=base_url)
+        else:
+            _client = OpenAI(api_key=api_key)
     return _client
+
 
 def query_llm_with_context(query: str, context: str):
     system_content = """You are a helpful assistant for answering user queries based on provided context. 
